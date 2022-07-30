@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700&display=swap");
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+}
+.row {
+  display: flex;
+  height: 100%;
+  padding: 0 32px;
+}
+.v-center {
+  align-items: center;
+}
+.space-between {
+  justify-content: space-between;
+}
