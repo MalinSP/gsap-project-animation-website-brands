@@ -1,10 +1,11 @@
+import { Link } from "gatsby"
 import React from "react"
 import { BsArrowRight } from "react-icons/bs"
 import styled from "styled-components"
 
 const Banner = () => {
   return (
-    <Wrapper className="main">
+    <Wrapper>
       <div className="container">
         <div className="row">
           <h2>
@@ -16,9 +17,9 @@ const Banner = () => {
             </div>
           </h2>
           <div className="btn-row">
-            <a href="/">
+            <Link to="/about">
               More about us <BsArrowRight className="icon" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

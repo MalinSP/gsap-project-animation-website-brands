@@ -7,6 +7,14 @@
   margin: 0;
   padding: 0;
 }
+body,
+html {
+  visibility: hidden;
+  user-select: none;
+  background: white;
+  overscroll-behavior: none;
+  margin: 0;
+}
 .container {
   max-width: 1200px;
   margin: 0 auto;
