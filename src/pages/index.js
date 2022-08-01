@@ -1,72 +1,57 @@
-import React, { useEffect, useLayoutEffect } from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 import "../css/main.css"
-import gsap from "gsap"
-import { Header, Banner, Cases, IntroOverlay } from "../components/"
+import { Header, Banner, Cases, IntroOverlay, Navigation } from "../components/"
+import { homeAnimation } from "../utils/homeAnimation"
+import { debounce } from "../utils/debounce"
 
 export default function Home() {
   // const title = useRef()
+  const [animationComplete, setAnimationComplete] = useState(false)
+  const [dimensions, setDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  })
+
+  const completeAnimation = () => {
+    setAnimationComplete(true)
+  }
   useEffect(() => {
-    let vh = window.innerHeight * 0.01
+    let vh = dimensions.height * 0.01
     document.documentElement.style.setProperty("--vh", `${vh}px`)
-  }, [])
+
+    // const HandleResize = () => {
+    //   setDimensions({
+    //     height: window.innerHeight,
+    //     width: window.innerWidth,
+    //   })
+    // }
+
+    const debouncedHandleResize = debounce(function handleResize() {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      })
+    }, 1000)
+    window.addEventListener("resize", debouncedHandleResize)
+
+    return () => {
+      window.removeEventListener("resize", debouncedHandleResize)
+    }
+  }, [dimensions.height])
 
   useLayoutEffect(() => {
-    gsap.to("body", { css: { visibility: "visible", duration: 0 } })
-    const tl = gsap.timeline()
-
-    tl.from(".line span", {
-      delay: 1,
-      y: 100,
-      ease: "power4.out",
-      skewY: 7,
-      duration: 1.8,
-      stagger: {
-        amount: 0.3,
-      },
-    })
-      .to(".overlay-top", {
-        duration: 1.6,
-        height: 0,
-        ease: "expo.inOut",
-        stagger: 0.4,
-      })
-      .to(".overlay-bottom", {
-        width: 0,
-        duration: 1.6,
-        ease: "expo.inOut",
-        delay: -0.8,
-        stagger: {
-          amount: 0.4,
-        },
-      })
-      .to(".intro-overlay", {
-        duration: 0,
-        css: { display: "none" },
-      })
-      .from(".case-image img", {
-        duration: 1.6,
-        scale: 1.4,
-        ease: "expo.inOut",
-        delay: -2,
-        stagger: {
-          amount: 0.4,
-        },
-      })
+    homeAnimation(completeAnimation)
   }, [])
 
   return (
     <>
-      {/* <div className="App"> */}
-      <React.StrictMode>
-        <IntroOverlay />
-        <Header />
-        <Banner
-        // title={title}
-        />
+      {animationComplete === false ? <IntroOverlay /> : ""}
+      <Header dimensions={dimensions} />
+      <div className="App">
+        <Banner />
         <Cases />
-      </React.StrictMode>
-
-      {/* </div> */}
+      </div>
+      <Navigation />
     </>
   )
 }
